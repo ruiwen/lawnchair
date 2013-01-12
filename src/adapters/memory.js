@@ -19,8 +19,8 @@ Lawnchair.adapter('memory', (function(){
         },
 
         save: function(obj, cb) {
-            var key = obj.key || this.uuid()
-            
+            var key = obj.id || obj.key || this.uuid()
+
             this.exists(key, function(exists) {
                 if (!exists) {
                     if (obj.key) delete obj.key
