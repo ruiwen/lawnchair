@@ -5,13 +5,16 @@
 Lawnchair.plugin((function(){        
     // 
     var interpolate = function(template, args) {
-        var parts = template.split('?').filter(function(i) { return i != ''})
-        ,   query = ''
 
-        for (var i = 0, l = parts.length; i < l; i++) {
-            query += parts[i] + args[i]    
-        }
-        return query
+        query = template.replace(/\?/g, function() {
+            var item = args.shift();
+            if(typeof item == "string") {
+                item = "'" + item + "'";
+            }
+            return item;
+        });
+
+        return query;
     }
      
     var sorter = function(p) {
