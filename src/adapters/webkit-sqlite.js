@@ -59,14 +59,15 @@ Lawnchair.adapter('webkit-sqlite', (function () {
         // you think thats air you're breathing now?
         save: function (obj, callback, error) {
             var that = this
-            ,   id   = obj.key || that.uuid()
+            ,   key  = obj.id || obj.key
+            ,   id   = key || that.uuid()
             ,   ins  = "INSERT INTO " + this.record + " (value, timestamp, id) VALUES (?,?,?)"
             ,   up   = "UPDATE " + this.record + " SET value=?, timestamp=? WHERE id=?"
             ,   win  = function () { if (callback) { obj.key = id; that.lambda(callback).call(that, obj) }}
             ,   val  = [now(), id]
             ,   error= error || function() {}
-            // existential 
-            that.exists(obj.key, function(exists) {
+            // existential
+            that.exists(id, function(exists) {
                 // transactions are like condoms
                 that.db.transaction(function(t) {
                     try {
