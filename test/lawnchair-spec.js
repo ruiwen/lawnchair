@@ -281,6 +281,38 @@ test( 'save without callback', function() {
 
 });
 
+test( 'save prefers id as key field', function() {
+
+    QUnit.stop();
+    QUnit.expect(1);
+
+    me['id'] = '2';  // Setting the id fields
+    me['key'] = "two";
+
+    store.save(me, function(obj) {
+        this.get('2', function(o) {
+            equals(o.name, me.name, "saving uses id as key");
+            QUnit.start();
+        });
+    });
+});
+
+test( 'save falls back on key as key field', function() {
+
+    QUnit.stop();
+    QUnit.expect(1);
+
+    me['key'] = "two";  // Setting the id fields
+
+    store.save(me, function(obj) {
+        this.get("two", function(o) {
+            equals(o.name, me.name, "saving falls back on key as key");
+            QUnit.start();
+        });
+    });
+});
+
+
 module('batch()', {
     setup:function() {
         QUnit.stop();
