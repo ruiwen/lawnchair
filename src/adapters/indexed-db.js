@@ -147,8 +147,9 @@ Lawnchair.adapter('indexed-db', (function(){
 
          var trans = this.db.transaction(STORE_NAME, READ_WRITE);
          var store = trans.objectStore(STORE_NAME);
-         if (obj.key) {
-             request = store.put(obj, obj.key);
+         var key = obj.id || obj.key;
+         if (key) {
+             request = store.put(obj, key);
          } else if (this.useAutoIncrement) {
              request = store.put(obj); // use autoIncrementing key.
          } else {
